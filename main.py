@@ -56,3 +56,4 @@ for event in longpool.listen():
             kek = ' '.join(ala)
             if msg == "hihihi":
                 send_some_msg(id, f'{kek}')
+                # апе
