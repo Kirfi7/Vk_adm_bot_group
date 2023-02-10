@@ -58,15 +58,25 @@ def get_default_info(array):
     alt_admin_post = array[3]
     rank_up_date = array[11]
     admin_level = array[12]
-    reports = array[-7]
-    days_by_rank_up = array[-6]
+    reports = array[17]
+    days_by_rank_up = array[18]
     days_by_date = array[-5]
     punish_1 = array[14]
     punish_2 = array[15]
     punish_3 = array[16]
 
-    if admin_post == "Младший Модератор":
-        ranked_up = "Допущен" if (int(reports) >= 4000 and int(days_by_rank_up >= 13)) else "Не допущен"
+
+    if admin_post == "Младший Модератор" or admin_level < "4":
+        ranked_up = "Допущен" if (int(reports) >= 4000 and int(days_by_rank_up >= 13)) else "Отсутствует"
+
+    elif admin_post == "Модератор" or admin_level < "4":
+        ranked_up = "Допущен" if (int(reports) >= 8000 and int(days_by_rank_up >= 21)) else "Отсутствует"
+
+    elif admin_post == "Администратор" or admin_level < "4":
+        ranked_up = "Допущен" if (int(reports) >= 25000 and int(days_by_rank_up >= 50)) else "Отсутствует"
+
+    else:
+        ranked_up = "Максимальный уровень"
 
     return f"🔑 Основная информация 🔑\n" \
            f"Ваш никнейм: {nick_name}\n" \
@@ -82,7 +92,8 @@ def get_default_info(array):
            f"Количество выговоров: {punish_1}\n" \
            f"Количество предов: {punish_2}\n" \
            f"Количество устных: {punish_3}\n\n" \
-           f"✅ Общее кол-во ответов: {reports}\n"
+           f"✅ Общее кол-во ответов: {reports}\n" \
+           f"Допуск к повышению: {ranked_up}\n"
 
 
 prefix = ["/", "!", "+"]
