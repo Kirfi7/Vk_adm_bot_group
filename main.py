@@ -50,6 +50,7 @@ def access(from_user_id):
             return column_number, 1
     return 0, 0
 
+global ranked_up
 
 def get_default_info(array):
     nick_name = array[1]
@@ -66,14 +67,16 @@ def get_default_info(array):
     punish_3 = array[16]
 
 
-    if admin_post == "Младший Модератор" or admin_level < "4":
-        ranked_up = "Допущен" if (int(reports) >= 4000 and int(days_by_rank_up >= 13)) else "Отсутствует"
 
-    elif admin_post == "Модератор" or admin_level < "4":
-        ranked_up = "Допущен" if (int(reports) >= 8000 and int(days_by_rank_up >= 21)) else "Отсутствует"
+    if admin_level == str("1"):
+        ranked_up = "Допущен" if (int(reports) >= 4000 and int(days_by_rank_up) >= 13) else "Отсутствует"
 
-    elif admin_post == "Администратор" or admin_level < "4":
-        ranked_up = "Допущен" if (int(reports) >= 25000 and int(days_by_rank_up >= 50)) else "Отсутствует"
+    elif admin_level == str("2"):
+        ranked_up = "Допущен" if (int(reports) >= 8000 and int(days_by_rank_up) >= 21) else "Отсутствует"
+
+    elif admin_level == str("3"):
+        ranked_up = "Допущен" if (int(reports) >= 25000 and int(days_by_rank_up) >= 50) else "Отсутствует"
+
 
     else:
         ranked_up = "Максимальный уровень"
