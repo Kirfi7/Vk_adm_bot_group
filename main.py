@@ -2,6 +2,7 @@ import vk_api
 import gspread
 
 from vk_api.longpoll import VkLongPoll, VkEventType
+from vk_api.keyboard import VkKeyboard, VkKeyboardColor
 from oauth2client.service_account import ServiceAccountCredentials
 # from pprint import pprint
 
@@ -37,8 +38,8 @@ data = sheet.get_all_values()
 # numRows = sheet.row_count  # Get the number of rows in the sheetuioouiuiouiopuiopuio
 
 
-def sender(message_id, message_text):
-    vk_session.method("messages.send", {"user_id": message_id, "message": message_text, "random_id": 0})
+def sender(for_user_id, message_text):
+    vk_session.method("messages.send", {"user_id": for_user_id, "message": message_text, "random_id": 0})
 
 
 def access(from_user_id):
@@ -64,18 +65,24 @@ def get_default_info(array):
     punish_2 = array[15]
     punish_3 = array[16]
 
-    return f"Ваш никнейм: {nick_name}\n" \
+    if admin_post == "Младший Модератор":
+        ranked_up = "Допущен" if (int(reports) >= 4000 and int(days_by_rank_up >= 13)) else "Не допущен"
+
+    return f"🔑 Основная информация 🔑\n" \
+           f"Ваш никнейм: {nick_name}\n" \
            f"Должность: {admin_post}\n" \
            f"Доп. должность: {alt_admin_post}\n" \
            f"Уровень админ-прав: {admin_level}\n" \
+           f"\n📅 Важные даты и дни 📅\n" \
            f"Дата постановки: {date}\n" \
-           f"Дата повышения: {rank_up_date}\n\n" \
+           f"Дата повышения: {rank_up_date}\n" \
+           f"Дней с повышения: {days_by_rank_up}\n" \
+           f"Дней на админ-посту: {days_by_date}\n" \
+           f"\n⛔️ Активные наказания ⛔️\n" \
            f"Количество выговоров: {punish_1}\n" \
            f"Количество предов: {punish_2}\n" \
            f"Количество устных: {punish_3}\n\n" \
-           f"Количество ответов: {reports}\n" \
-           f"Дней с повышения: {days_by_rank_up}\n" \
-           f"Дней на админ-посту: {days_by_date}"
+           f"✅ Общее кол-во ответов: {reports}\n"
 
 
 prefix = ["/", "!", "+"]
@@ -87,14 +94,21 @@ vk = vk_session.get_api()
 
 for event in lp.listen():
     if event.type == VkEventType.MESSAGE_NEW and event.to_me:
-        cmd = event.text[1:]
+        text = event.text
         user_id = event.user_id
 
-        if access(user_id)[1] != 0 and event.text[0] in prefix:
+        if access(user_id)[1] != 0 and text == "INFO":
             line_id = access(user_id)[0]
             row = sheet.row_values(line_id)
             values_array = list(row)
-            print("1")
+            sender(user_id, get_default_info(values_array))
 
-            if cmd.lower() == "info":
-                sender(user_id, get_default_info(values_array))
+        elif event.text.lower() == "начать":
+            keyboard = VkKeyboard()
+            keyboard.add_button("INFO", VkKeyboardColor.POSITIVE)
+            vk_session.method("messages.send", {
+                "user_id": user_id,
+                "message": "Вы авторизовались в боте!",
+                "random_id": 0,
+                "keyboard": keyboard.get_keyboard()
+            })
