@@ -1,8 +1,8 @@
 import vk_api
-from vk_api.longpoll import VkLongPoll, VkEventType
 import gspread
+
+from vk_api.longpoll import VkLongPoll, VkEventType
 from oauth2client.service_account import ServiceAccountCredentials
-# 87423
 from pprint import pprint
 
 scope = ["https://spreadsheets.google.com/feeds",'https://www.googleapis.com/auth/spreadsheets',"https://www.googleapis.com/auth/drive.file","https://www.googleapis.com/auth/drive"]
@@ -43,8 +43,10 @@ vk_session = vk_api.VkApi(token="vk1.a.RcpYvhXvj2P9NOfFXQ_ycHiFm1ENdqSKt4iRTR4_Y
 session_api = vk_session.get_api()
 longpool = VkLongPoll(vk_session)
 
+
 def send_some_msg(id, some_text):
     vk_session.method("messages.send", {"user_id":id, "message":some_text,"random_id":0})
+
 
 for event in longpool.listen():
     if event.type == VkEventType.MESSAGE_NEW:
