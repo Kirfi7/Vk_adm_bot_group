@@ -61,7 +61,7 @@ def get_default_info(array):
     admin_level = array[12]
     reports = array[17]
     days_by_rank_up = array[18]
-    days_by_date = array[-5]
+    days_by_date = array[19]
     punish_1 = array[14]
     punish_2 = array[15]
     punish_3 = array[16]
