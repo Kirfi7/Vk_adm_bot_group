@@ -141,6 +141,12 @@ while True:
                     keyboard.add_button("INFO", VkKeyboardColor.POSITIVE)
                     vk_session.method("messages.send", {
                         "user_id": user_id,
+                        "message": "Авторизация...",
+                        "random_id": 0,
+                        "keyboard": keyboard.get_empty_keyboard()
+                    })
+                    vk_session.method("messages.send", {
+                        "user_id": user_id,
                         "message": "Вы авторизовались в боте!",
                         "random_id": 0,
                         "keyboard": keyboard.get_keyboard()
