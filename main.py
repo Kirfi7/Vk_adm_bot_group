@@ -83,7 +83,7 @@ def get_info_about_rank(array):
         reps_by_lvl = rank_standards[admin_lvl]['reports']
 
         if days_by_lvl > up_date and reps_by_lvl > reports:
-            return cfg.rank_up_message(admin_lvl, (reps_by_lvl - reports), (reps_by_lvl - reports), p1, p2, p3, 0)
+            return cfg.rank_up_message(admin_lvl, (reps_by_lvl - reports), (days_by_lvl - up_date), p1, p2, p3, 0)
 
         elif days_by_lvl > up_date and reps_by_lvl <= reports:
             return cfg.rank_up_message(admin_lvl, 0, (days_by_lvl - up_date), p1, p2, p3, 0)
