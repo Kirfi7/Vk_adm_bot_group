@@ -63,14 +63,11 @@ def get_default_info(array):
            f"Количество выговоров: {array[14]}/3\n" \
            f"Количество предов: {array[15]}/2\n" \
            f"Количество устных: {array[16]}/2\n\n" \
-           f"✅ Общее кол-во ответов: {array[17]}\n" \
-           f"\n🔑 Информация о повышении 🔑\n"
+           f"✅ Общее кол-во ответов: {array[17]}\n"
 
 
 def get_info_about_rank(array):
     admin_lvl = array[12]
-    reports = int(array[17]); up_date = int(array[18])
-    p1 = array[14]; p2 = array[15]; p3 = array[16]
 
     rank_standards = {
         "1": {"days": 13, "reports": 4000},
@@ -79,6 +76,9 @@ def get_info_about_rank(array):
     }
 
     if int(admin_lvl) < 4:
+        reports = int(array[17]); up_date = int(array[18])
+        p1 = array[14]; p2 = array[15]; p3 = array[16]
+
         days_by_lvl = rank_standards[admin_lvl]['days']
         reps_by_lvl = rank_standards[admin_lvl]['reports']
 
