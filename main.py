@@ -13,19 +13,9 @@ scope = ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/au
 creds = ServiceAccountCredentials.from_json_keyfile_name("creds.json", scope)
 client = gspread.authorize(creds)
 sheet = client.open("ADMINS RED1").sheet1
-data = sheet.get_all_values()
-
-
-# cola = sheet.col_values(14)
-# col = sheet.col_values(2)
-# cole = sheet.col_values(15)
-# coli = sheet.col_values(16)
 
 # row = sheet.row_values(3)
-
-# pprint(row[:17])
-# pprint(col+cola+cole+coli)
-
+#
 # data = sheet.get_all_records()  # Get a list of all records
 #
 # row = sheet.row_values(3)  # Get a specific row
@@ -37,7 +27,7 @@ data = sheet.get_all_values()
 #
 # sheet.update_cell(2,2, "CHANGED")  # Update one cell
 #
-# numRows = sheet.row_count  # Get the number of rows in the sheetuioouiuiouiopuiopuio
+# numRows = sheet.row_count  # Get the number of rows in the sheet
 
 
 def sender(for_user_id, message_text):
