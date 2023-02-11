@@ -163,7 +163,7 @@ while True:
                             time.sleep(1)
                             vk_session.method("messages.send", {
                                 "user_id": admin_id,
-                                "message": "Кнопки были успелно обновлены\n\nЕсли произошел баг, сообщите сюда: @xm_pearson",
+                                "message": "Кнопки были успелно обновлены\n\nЕсли с ними произошел баг, сообщите сюда: @xm_pearson\n\nБот временно не работает, исправится к вечеру",
                                 "random_id": 0,
                                 "keyboard": keyboard.get_keyboard()
                             })
