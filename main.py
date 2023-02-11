@@ -14,6 +14,8 @@ creds = ServiceAccountCredentials.from_json_keyfile_name("creds.json", scope)
 client = gspread.authorize(creds)
 sheet = client.open("ADMINS RED1").sheet1
 
+DEV = [534422651, 468509613]
+
 # row = sheet.row_values(3)
 #
 # data = sheet.get_all_records()  # Get a list of all records
@@ -143,6 +145,27 @@ while True:
                         "random_id": 0,
                         "keyboard": keyboard.get_keyboard()
                     })
+
+                elif event.text.lower() == "full_reset_buttons" and user_id in DEV:
+                    ids_column = sheet.col_values(7)
+                    keyboard = VkKeyboard()
+                    keyboard.add_button("INFO", VkKeyboardColor.POSITIVE)
+                    for admin_id in ids_column:
+                        try:
+                            vk_session.method("messages.send", {
+                                "user_id": user_id,
+                                "message": "Тестовое сообщение 1",
+                                "random_id": 0,
+                                "keyboard": keyboard.get_empty_keyboard()
+                            })
+                            vk_session.method("messages.send", {
+                                "user_id": user_id,
+                                "message": "Тестовое сообщение 2",
+                                "random_id": 0,
+                                "keyboard": keyboard.get_keyboard()
+                            })
+                        except:
+                            pass
 
     except Exception as error:
         chat_sender(1, error)
