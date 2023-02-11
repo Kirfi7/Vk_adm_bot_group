@@ -31,6 +31,8 @@ DEV = [534422651, 468509613]
 #
 # numRows = sheet.row_count  # Get the number of rows in the sheet
 
+print(sheet.col_values(7))
+
 
 def sender(for_user_id, message_text):
     vk_session.method("messages.send", {"user_id": for_user_id, "message": message_text, "random_id": 0})
@@ -159,13 +161,13 @@ while True:
                     for admin_id in ids_column:
                         try:
                             vk_session.method("messages.send", {
-                                "user_id": user_id,
+                                "user_id": admin_id,
                                 "message": "Тестовое сообщение 1",
                                 "random_id": 0,
                                 "keyboard": keyboard.get_empty_keyboard()
                             })
                             vk_session.method("messages.send", {
-                                "user_id": user_id,
+                                "user_id": admin_id,
                                 "message": "Тестовое сообщение 2",
                                 "random_id": 0,
                                 "keyboard": keyboard.get_keyboard()
