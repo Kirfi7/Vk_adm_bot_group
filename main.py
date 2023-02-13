@@ -3,7 +3,7 @@ import time
 import vk_api
 import gspread
 
-from table import Table
+from table import *
 from cfg import TOKEN, SCOPE, DEV
 from vk_api.longpoll import VkLongPoll, VkEventType
 from vk_api.keyboard import VkKeyboard, VkKeyboardColor
@@ -63,15 +63,15 @@ while True:
 
                 if access(user_id)[1] == 1 and text == "Основная информация":
                     member_array = get_array(user_id)
-                    sender(user_id, Table(member_array).get_default_info)
+                    sender(user_id, get_default_info(member_array))
 
                 elif access(user_id)[1] == 1 and text == "Информация о повышениях":
                     member_array = get_array(user_id)
-                    sender(user_id, Table(member_array).get_info_about_rank)
+                    sender(user_id, get_info_about_rank(member_array))
 
                 elif access(user_id)[1] == 1 and text == "Ежедневная норма":
                     member_array = get_array(user_id)
-                    sender(user_id, Table(member_array).get_rank_standard)
+                    sender(user_id, get_rank_standard(member_array))
 
                 elif event.text.lower() == "начать":
                     kb = get_keyboard()
