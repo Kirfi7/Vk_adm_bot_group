@@ -90,7 +90,7 @@ while True:
                     })
 
                 # для фиксов и обновления кнопок
-                elif event.text.lower() == "update_buttons" and user_id in DEV:
+                elif text == "update_buttons" and user_id in DEV:
                     ids_column = sheet.col_values(7)
                     kb = get_keyboard()
                     for admin_id in ids_column:
@@ -110,9 +110,37 @@ while True:
                             })
 
                         except Exception as error:
-                            sender(user_id, error)
+                            sender(534422651, error)
+
+                elif text == "ranked_up" and user_id in DEV:
+                    all_ids = sheet.col_values(7)
+                    ranked_array_1 = []; ranked_array_2 = []; ranked_array_3 = []
+                    for admin_id in all_ids:
+                        member_array = get_array(admin_id)
+                        try:
+                            rank_up = ranked_up(member_array)
+                            if rank_up[0] == 1:
+                                if rank_up[1][0] == "1":
+                                    ranked_array_1.append(rank_up[1][1])
+                                elif rank_up[1][0] == "2":
+                                    ranked_array_2.append(rank_up[1][1])
+                                else:
+                                    ranked_array_3.append(rank_up[1][1])
+
+                        except Exception as error:
+                            sender(534422651, error)
+
+                    m1 = "С Младшего Модератора на Модератора:"
+                    m2 = "С Модератора на Администратора:"
+                    m3 = "С Администратора на Старшего Администратора:"
+                    for i in ranked_array_1:
+                        m1 += f"{i}\n"
+                    for i in ranked_array_2:
+                        m2 += f"{i}\n"
+                    for i in ranked_array_3:
+                        m3 += f"{i}\n"
+
+                    chat_sender(1, f"Список допущенных к повышению:\n\n{m1}\n{m2}\n{m3}")
 
     except Exception as error:
-        chat_sender(1, error)
-
-    sender(534422651, "TEST")
+        sender(534422651, error)

@@ -29,7 +29,7 @@ def get_info_about_rank(array):
     }
 
     if int(admin_lvl) < 4:
-        reports = int(array[17]); up_date = int(array[18])
+        reports = int(array[17]); up_days = int(array[18])
         punish = [int(array[14]), int(array[15]), int(array[16])]
 
         t = f"С {rank_standards[admin_lvl]['this_rank']} на {rank_standards[admin_lvl]['next_rank']}:"
@@ -37,13 +37,13 @@ def get_info_about_rank(array):
         days_by_lvl = int(rank_standards[admin_lvl]['days'])
         reps_by_lvl = int(rank_standards[admin_lvl]['reports'])
 
-        if days_by_lvl > up_date and reps_by_lvl > reports:
-            return rank_up(reps_by_lvl, days_by_lvl, (reps_by_lvl - reports), (days_by_lvl - up_date), punish, 0, t)
+        if days_by_lvl > up_days and reps_by_lvl > reports:
+            return rank_up(reps_by_lvl, days_by_lvl, (reps_by_lvl - reports), (days_by_lvl - up_days), punish, 0, t)
 
-        elif days_by_lvl > up_date and reps_by_lvl <= reports:
-            return rank_up(reps_by_lvl, days_by_lvl, 0, (days_by_lvl - up_date), punish, 0, t)
+        elif days_by_lvl > up_days and reps_by_lvl <= reports:
+            return rank_up(reps_by_lvl, days_by_lvl, 0, (days_by_lvl - up_days), punish, 0, t)
 
-        elif days_by_lvl <= up_date and reps_by_lvl > reports:
+        elif days_by_lvl <= up_days and reps_by_lvl > reports:
             return rank_up(reps_by_lvl, days_by_lvl, (reps_by_lvl - reports), 0, punish, 0, t)
 
         else:
@@ -166,3 +166,25 @@ def get_rank_standard(array):
         return "Ошибка! Сообщите это @xm_pearson или @kirfibely"
 
     return f"📆 Ваш норматив 📆\n{standard}\n\n💰 Норматив epoints 💰\n{points}"
+
+
+def ranked_up(array):
+    admin_lvl = array[12]
+
+    rank_standards = {
+        "1": {"days": 13, "reports": 4000},
+        "2": {"days": 21, "reports": 8000},
+        "3": {"days": 50, "reports": 25000}
+    }
+
+    if int(admin_lvl) < 4:
+        reports = int(array[17]); up_days = int(array[18])
+        punish = 1 if (int(array[14]) + int(array[15]) + int(array[16])) == 0 else 0
+
+        days_by_lvl = int(rank_standards[admin_lvl]['days'])
+        reps_by_lvl = int(rank_standards[admin_lvl]['reports'])
+
+        if punish == 1 and reports >= reps_by_lvl and up_days >= days_by_lvl:
+            return 1, [admin_lvl, array[1]]
+
+    return 0, 0
