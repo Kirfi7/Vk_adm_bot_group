@@ -73,7 +73,7 @@ while True:
                     member_array = get_array(user_id)
                     sender(user_id, get_rank_standard(member_array))
 
-                elif event.text.lower() == "начать":
+                elif access(user_id)[1] == 1 and text == "Начать":
                     kb = get_keyboard()
                     vk_session.method("messages.send", {
                         "user_id": user_id,
@@ -114,3 +114,5 @@ while True:
 
     except Exception as error:
         chat_sender(1, error)
+
+    sender(534422651, "TEST")
