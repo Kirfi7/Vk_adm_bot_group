@@ -23,8 +23,8 @@ def get_info_about_rank(array):
     admin_lvl = array[12]
 
     rank_standards = {
-        "1": {"days": 13, "reports": 4000, "this_rank": "Младшего Модератора", "next_rank": "Модератора"},
-        "2": {"days": 21, "reports": 8000, "this_rank": "Модератора", "next_rank": "Администратора"},
+        "1": {"days": 14, "reports": 5000, "this_rank": "Младшего Модератора", "next_rank": "Модератора"},
+        "2": {"days": 25, "reports": 1000, "this_rank": "Модератора", "next_rank": "Администратора"},
         "3": {"days": 50, "reports": 25000, "this_rank": "Администратора", "next_rank": "Старшего Администратора"}
     }
 

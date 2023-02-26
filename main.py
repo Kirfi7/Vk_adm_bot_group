@@ -92,7 +92,6 @@ while True:
                         "keyboard": kb.get_keyboard()
                     })
 
-                # для фиксов и обновления кнопок
                 elif text == "update_buttons" and user_id in DEV:
                     ids_column = sheet.col_values(7)
                     kb = get_keyboard()
