@@ -1,7 +1,8 @@
 from cfg import rank_up
 
 
-def get_default_info(array):
+def get_default_info(array: list) -> str:
+    """Функция получения стандартной информации об администраторе"""
     return f"🔑 Основная информация 🔑\n" \
            f"Ваш никнейм: {array[1]}\n" \
            f"Должность: {array[2]}\n" \
@@ -19,7 +20,8 @@ def get_default_info(array):
            f"✅ Общее кол-во ответов: {array[17]}\n"
 
 
-def get_info_about_rank(array):
+def get_info_about_rank(array: list):
+    """Функция получения информации о повышении администратора"""
     admin_lvl = array[12]
 
     rank_standards = {
@@ -29,7 +31,8 @@ def get_info_about_rank(array):
     }
 
     if int(admin_lvl) < 4:
-        reports = int(array[17]); up_days = int(array[18])
+        reports = int(array[17])
+        up_days = int(array[18])
         punish = [int(array[14]), int(array[15]), int(array[16])]
 
         t = f"С {rank_standards[admin_lvl]['this_rank']} на {rank_standards[admin_lvl]['next_rank']}:"
@@ -52,7 +55,8 @@ def get_info_about_rank(array):
         return "Достигнут максимальный админ-уровень!"
 
 
-def get_rank_standard(array):
+def get_rank_standard(array: list) -> str:
+    """Функция получения информации о норме и баллах администратора"""
     post = array[2]
     second = array[3]
     level = f"{array[12]}lvl"

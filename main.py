@@ -23,7 +23,7 @@ def chat_sender(for_chat_id, message_text):
     vk_session.method("messages.send", {"chat_id": for_chat_id, "message": message_text, "random_id": 0})
 
 
-def get_array(for_user_id):
+def get_array(for_user_id) -> list:
     line_id = access(for_user_id)[0]
     values = sheet.row_values(line_id)
     values_array = list(values)

@@ -6,7 +6,7 @@ SCOPE = ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/au
 DEV = [534422651, 468509613]
 
 
-def rank_up(full_reps, full_days, reps, days, punish, x, t):
+def rank_up(full_reps: int, full_days: int, reps: int, days: int, punish: list, x: int, t: str) -> str:
     """Функция для форматирования ответа на запрос об информации по повышению"""
     if (x == 0) or ((punish[0] + punish[1] + punish[2]) != 0):
         return f"🔑 Информация о повышениях 🔑\n\n{t}\n" \
