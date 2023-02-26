@@ -12,6 +12,7 @@ from oauth2client.service_account import ServiceAccountCredentials
 creds = ServiceAccountCredentials.from_json_keyfile_name("creds.json", SCOPE)
 client = gspread.authorize(creds)
 sheet = client.open("ADMINS RED1").sheet1
+# punish = client.open("ADMINS RED1").sheet2
 
 
 def sender(for_user_id, message_text):
@@ -30,7 +31,6 @@ def get_array(for_user_id):
 
 
 def get_keyboard():
-    """получаю клавиатуру с дефолтными кнопками"""
     keyboard = VkKeyboard()
     keyboard.add_button("Основная информация", VkKeyboardColor.POSITIVE)
     keyboard.add_button("Ежедневная норма", VkKeyboardColor.PRIMARY)
@@ -40,12 +40,12 @@ def get_keyboard():
 
 
 def access(from_user_id):
-    """чекаю, есть ли юзер в адм-табле и определяю его строку"""
+    """Проверка, есть ли юзер в таблице и определение его строки"""
     ids = sheet.col_values(7)
     column_number = 0
-    for i in ids:
+    for j in ids:
         column_number += 1
-        if str(i) == str(from_user_id):
+        if str(j) == str(from_user_id):
             return column_number, 1
     return 0, 0
 
@@ -67,7 +67,10 @@ while True:
 
                 elif access(user_id)[1] == 1 and text == "Информация о повышениях":
                     member_array = get_array(user_id)
-                    sender(user_id, get_info_about_rank(member_array))
+                    message = get_info_about_rank(member_array)
+                    if "✅" in message:
+                        chat_sender(1, f"[id{user_id}|{member_array[1]}] достиг критерий для повышения")
+                    sender(user_id, message)
 
                 elif access(user_id)[1] == 1 and text == "Ежедневная норма":
                     member_array = get_array(user_id)
@@ -114,7 +117,9 @@ while True:
 
                 elif text == "ranked_up" and user_id in DEV:
                     all_ids = sheet.col_values(7)
-                    ranked_array_1 = []; ranked_array_2 = []; ranked_array_3 = []
+                    ranked_array_1 = []
+                    ranked_array_2 = []
+                    ranked_array_3 = []
                     for admin_id in all_ids:
                         member_array = get_array(admin_id)
                         try:
@@ -133,14 +138,15 @@ while True:
                     m1 = "С Младшего Модератора на Модератора:"
                     m2 = "С Модератора на Администратора:"
                     m3 = "С Администратора на Старшего Администратора:"
-                    for i in ranked_array_1:
-                        m1 += f"{i}\n"
-                    for i in ranked_array_2:
-                        m2 += f"{i}\n"
-                    for i in ranked_array_3:
-                        m3 += f"{i}\n"
+                    for i1 in ranked_array_1:
+                        m1 += f"{i1}\n"
+                    for i2 in ranked_array_2:
+                        m2 += f"{i2}\n"
+                    for i3 in ranked_array_3:
+                        m3 += f"{i3}\n"
 
                     chat_sender(1, f"Список допущенных к повышению:\n\n{m1}\n{m2}\n{m3}")
 
     except Exception as error:
         sender(534422651, error)
+        sender(468509613, error)

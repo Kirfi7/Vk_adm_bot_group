@@ -172,8 +172,8 @@ def ranked_up(array):
     admin_lvl = array[12]
 
     rank_standards = {
-        "1": {"days": 13, "reports": 4000},
-        "2": {"days": 21, "reports": 8000},
+        "1": {"days": 14, "reports": 5000},
+        "2": {"days": 25, "reports": 10000},
         "3": {"days": 50, "reports": 25000}
     }
 
