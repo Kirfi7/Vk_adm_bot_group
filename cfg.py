@@ -3,7 +3,9 @@ TOKEN = "vk1.a.RcpYvhXvj2P9NOfFXQ_ycHiFm1ENdqSKt4iRTR4_YltoNejArEwUNnQqy--Hq3vvy
 SCOPE = ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/auth/spreadsheets",
          "https://www.googleapis.com/auth/drive.file", "https://www.googleapis.com/auth/drive"]
 
-DEV = [534422651, 468509613]
+DEV = {534422651: "Миша", 468509613: "Кирилл", 16715256: "Прохор"}
+
+CMDS = ["punish", "remove", "update", "global"]
 
 
 def rank_up(full_reps: int, full_days: int, reps: int, days: int, punish: list, x: int, t: str) -> str:
