@@ -3,7 +3,7 @@ import time
 import vk_api
 import gspread
 
-from cfg import TOKEN, SCOPE, DEV, CMDS
+from cfg import TOKEN, SCOPE, ACCESS, CMDS
 from vk_api.longpoll import VkLongPoll, VkEventType
 from vk_api.keyboard import VkKeyboard, VkKeyboardColor
 from oauth2client.service_account import ServiceAccountCredentials
@@ -97,7 +97,7 @@ while True:
                 cmd = text[1:]
                 if text[0] in ["/", "!", "+"] and cmd.split()[0] in CMDS:
 
-                    if cmd == "update" and user_id in DEV:
+                    if cmd == "update" and user_id in ACCESS:
                         all_admins = list(set(sheet.col_values(7)))[2:]
                         [get_keyboard(admin) for admin in all_admins]
                         continue
@@ -111,6 +111,5 @@ while True:
                         argument = array[1]
                         sender(user_id, punishment(argument, is_big=True))
 
-    except Exception as error:
-        sender(534422651, error)
-        sender(468509613, error)
+    except:
+        pass
