@@ -4,7 +4,7 @@ TG_TOKEN = "6331677615:AAHOeIYrTSRFGGbzjwsI0oYd4qJhsEHvlow"
 SCOPE = ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/auth/spreadsheets",
          "https://www.googleapis.com/auth/drive.file", "https://www.googleapis.com/auth/drive"]
 
-ACCESS = {534422651: "Миша", 468509613: "Кирилл", 16715256: "Прохор", 345814069: "Костя", 137480835: "Серый"}
+ACCESS = {534422651: "Миша", 468509613: "Кирилл", 16715256: "Прохор", 345814069: "Костя"}
 
 CMDS = ["punish", "remove", "update", "global"]
 
@@ -23,5 +23,4 @@ def rank_up(full_reps: int, full_days: int, reps: int, days: int, punish: list, 
         return f"✅ Вы выполнили все критерии для получения повышения! Руководство сервера было уведомлено!"
 
 
-report_message = "Вы хотите отправить уведомление главному администратору о прочтении ваших личных сообщений. " \
-    "Пожалуйста, откажитесь от злоупотребления этой функцией: если вы уже уведомили о своём сообщении, не нужно делать это повторно."
+report_message = "Вы хотите отправить уведомление главному администратору о прочтении ваших личных сообщений. Нажмите «Уведомить», чтобы подтвердить действие!"

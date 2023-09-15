@@ -54,7 +54,11 @@ def message_handler(event):
 
         if cmd == "update" and user_id in config.ACCESS:
             all_admins = list(set(sheet.col_values(7)))[2:]
-            [get_keyboard(admin) for admin in all_admins]
+            for admin in all_admins:
+                try:
+                    get_keyboard(admin)
+                except:
+                    pass
             return
 
         array = cmd.split()
@@ -68,7 +72,6 @@ def message_handler(event):
 
 
 def event_handler(event):
-    print(event)
     try:
         if event.type == VkBotEventType.MESSAGE_NEW and not event.from_chat:
             message_handler(event)
