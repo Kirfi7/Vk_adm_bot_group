@@ -1,6 +1,6 @@
 import gspread
 
-from cfg import rank_up, SCOPE
+from config import rank_up, SCOPE
 from oauth2client.service_account import ServiceAccountCredentials
 
 creds = ServiceAccountCredentials.from_json_keyfile_name("creds.json", SCOPE)

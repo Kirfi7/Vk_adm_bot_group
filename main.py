@@ -1,115 +1,94 @@
-import time
+import threading
+import notify
 
-import vk_api
-import gspread
-
-from cfg import TOKEN, SCOPE, ACCESS, CMDS
-from vk_api.longpoll import VkLongPoll, VkEventType
-from vk_api.keyboard import VkKeyboard, VkKeyboardColor
-from oauth2client.service_account import ServiceAccountCredentials
+from vk_api.bot_longpoll import VkBotLongPoll, VkBotEventType
 from table import get_default_info, get_info_about_rank, punishment
+from functions import *
 
-creds = ServiceAccountCredentials.from_json_keyfile_name("creds.json", SCOPE)
-client = gspread.authorize(creds)
-sheet = client.open("ADMINS RED1").worksheet("Успеваемость администрации")
-punish = client.open("ADMINS RED1").worksheet("Логи выговоров")
+lp = VkBotLongPoll(vk=vk_session, group_id=209878062)
 
 
-def sender(for_user_id, message_text):
-    vk_session.method("messages.send", {"user_id": for_user_id, "message": message_text, "random_id": 0})
+def callback_handler(event):
+    data = event.object.payload
+    user_id = event.object["user_id"]
+
+    if data["type"] == "send":
+        notify.send_notify(user_id, get_name(user_id))
+        editor(user_id, event.object.conversation_message_id,
+               "Уведомление успешно отправлено!")
+
+    elif data["type"] == "deny":
+        editor(user_id, event.object.conversation_message_id,
+               "Отправка уведомления отменена!")
 
 
-def chat_sender(for_chat_id, message_text):
-    vk_session.method("messages.send", {"chat_id": for_chat_id, "message": message_text, "random_id": 0})
+def message_handler(event):
+    text = event.message.text
+    user_id = event.message["from_id"]
+    is_access = access(user_id)
+
+    if is_access[1] != 1:
+        return
+
+    nick_name = sheet.cell(is_access[0], 2).value
+
+    if text == "Начать":
+        get_keyboard(user_id)
+
+    if text == "Основная информация":
+        member_array = get_array(user_id)
+        sender(user_id, get_default_info(member_array))
+
+    if text == "Последние наказания":
+        sender(user_id, "Последние 10 действий с наказаниями:\n\n" + punishment(nick_name))
+
+    if text == "Инфа о повышении":
+        member_array = get_array(user_id)
+        sender(user_id, get_info_about_rank(member_array))
+
+    if text == "Связаться с ГА":
+        send_report_message(user_id, event.message.id)
+
+    cmd = text[1:]
+    if text[0] in ["/", "!", "+"] and cmd.split()[0] in config.CMDS:
+
+        if cmd == "update" and user_id in config.ACCESS:
+            all_admins = list(set(sheet.col_values(7)))[2:]
+            [get_keyboard(admin) for admin in all_admins]
+            return
+
+        array = cmd.split()
+        if len(array) == 0:
+            sender(user_id, "Введите команду повторно, указав никнейм админа.")
+            return
+
+        if "punish" in cmd:
+            argument = array[1]
+            sender(user_id, punishment(argument, is_big=True))
 
 
-def get_array(for_user_id) -> list:
-    line_id = access(for_user_id)[0]
-    values = sheet.row_values(line_id)
-    values_array = list(values)
-    return values_array
-
-
-def get_keyboard(for_user_id):
-    keyboard = VkKeyboard()
-    keyboard.add_button("Основная информация", VkKeyboardColor.POSITIVE)
-    keyboard.add_button("Последние наказания", VkKeyboardColor.PRIMARY)
-    keyboard.add_line()
-    keyboard.add_button("Информация о повышениях", VkKeyboardColor.NEGATIVE)
-    vk_session.method("messages.send", {
-        "user_id": for_user_id,
-        "message": "Создание кнопок...",
-        "random_id": 0,
-        "keyboard": keyboard.get_empty_keyboard()
-    })
-    time.sleep(0.25)
-    vk_session.method("messages.send", {
-        "user_id": for_user_id,
-        "message": "Успешно!",
-        "random_id": 0,
-        "keyboard": keyboard.get_keyboard()
-    })
-
-
-def access(from_user_id):
-    """Проверка, есть ли юзер в таблице и определение его строки"""
-    ids = sheet.col_values(7)
-    column_number = 0
-    for j in ids:
-        column_number += 1
-        if str(j) == str(from_user_id):
-            return column_number, 1
-    return 0, 0
-
-
-vk_session = vk_api.VkApi(token=TOKEN)
-lp = VkLongPoll(vk_session)
-vk = vk_session.get_api()
-
-while True:
+def event_handler(event):
+    print(event)
     try:
-        for event in lp.listen():
-            if event.type == VkEventType.MESSAGE_NEW and event.to_me:
-                text = event.text
-                user_id = event.user_id
-                is_access = access(user_id)
+        if event.type == VkBotEventType.MESSAGE_NEW and not event.from_chat:
+            message_handler(event)
 
-                if is_access[1] != 1:
-                    continue
-
-                nick_name = sheet.cell(is_access[0], 2).value
-
-                if text == "Начать":
-                    get_keyboard(user_id)
-
-                if text == "Основная информация":
-                    member_array = get_array(user_id)
-                    sender(user_id, get_default_info(member_array))
-
-                if text == "Последние наказания":
-                    sender(user_id, "Последние 10 действий с наказаниями:\n\n" + punishment(nick_name))
-
-                if text == "Информация о повышениях":
-                    member_array = get_array(user_id)
-                    message = get_info_about_rank(member_array)
-                    sender(user_id, message)
-
-                cmd = text[1:]
-                if text[0] in ["/", "!", "+"] and cmd.split()[0] in CMDS:
-
-                    if cmd == "update" and user_id in ACCESS:
-                        all_admins = list(set(sheet.col_values(7)))[2:]
-                        [get_keyboard(admin) for admin in all_admins]
-                        continue
-
-                    array = cmd.split()
-                    if len(array) == 0:
-                        sender(user_id, "Введите команду повторно, указав никнейм админа.")
-                        continue
-
-                    if "punish" in cmd:
-                        argument = array[1]
-                        sender(user_id, punishment(argument, is_big=True))
+        elif event.type == VkBotEventType.MESSAGE_EVENT:
+            callback_handler(event)
 
     except:
-        pass
+        raise
+
+
+def main():
+    while True:
+        try:
+            for event in lp.listen():
+                threading.Thread(target=event_handler, args=(event,)).start()
+
+        except:
+            raise
+
+
+if __name__ == "__main__":
+    main()

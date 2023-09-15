@@ -1,4 +1,5 @@
-TOKEN = "vk1.a.RcpYvhXvj2P9NOfFXQ_ycHiFm1ENdqSKt4iRTR4_YltoNejArEwUNnQqy--Hq3vvyG_3-smfpgjNT-rHuUpNVcdJfMBRvV7CXhw0eL-T6dBYW-nAI1t_9834yfJpQBQaO1Y2Is9lRjDePfVEGwObaCyNOEWXaZL_K4OC9a7XXgbrpgGm-6vMOxShAufDs46qU34iqIervEGqItexmEX8nA"
+VK_TOKEN = "vk1.a.RcpYvhXvj2P9NOfFXQ_ycHiFm1ENdqSKt4iRTR4_YltoNejArEwUNnQqy--Hq3vvyG_3-smfpgjNT-rHuUpNVcdJfMBRvV7CXhw0eL-T6dBYW-nAI1t_9834yfJpQBQaO1Y2Is9lRjDePfVEGwObaCyNOEWXaZL_K4OC9a7XXgbrpgGm-6vMOxShAufDs46qU34iqIervEGqItexmEX8nA"
+TG_TOKEN = "6331677615:AAHOeIYrTSRFGGbzjwsI0oYd4qJhsEHvlow"
 
 SCOPE = ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/auth/spreadsheets",
          "https://www.googleapis.com/auth/drive.file", "https://www.googleapis.com/auth/drive"]
@@ -20,3 +21,7 @@ def rank_up(full_reps: int, full_days: int, reps: int, days: int, punish: list, 
 
     else:
         return f"✅ Вы выполнили все критерии для получения повышения! Руководство сервера было уведомлено!"
+
+
+report_message = "Вы хотите отправить уведомление главному администратору о прочтении ваших личных сообщений. " \
+    "Пожалуйста, откажитесь от злоупотребления этой функцией: если вы уже уведомили о своём сообщении, не нужно делать это повторно."
